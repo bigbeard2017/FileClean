@@ -27,10 +27,6 @@ public class CleanService {
         return instance;
     }
 
-    public NotifyLog getNotifyLog() {
-        return notifyLog;
-    }
-
     public void setNotifyLog(NotifyLog notifyLog) {
         this.notifyLog = notifyLog;
     }
@@ -88,8 +84,7 @@ public class CleanService {
         } else {
             File[] files = file.listFiles();
             if (files.length == 0) {
-                boolean delete = file.delete();
-                showLog("Delete Directory is " + delete + " [" + file.getAbsolutePath() + "] ");
+                deleteFile(file);
             } else {
                 for (File f : files) {
                     if (f.isFile()) {
@@ -98,17 +93,20 @@ public class CleanService {
                         delete(f.getAbsolutePath());
                     }
                 }
+                deleteFile(file);
             }
-        }
 
+        }
     }
 
     private void deleteFile(File file) {
         if (file.isFile() == false) {
-            return;
+            boolean delete = file.delete();
+            showLog("Delete file is " + delete + " [" + file.getAbsolutePath() + "] ");
+        } else {
+            boolean delete = file.delete();
+            showLog("Delete Directory is " + delete + " [" + file.getAbsolutePath() + "] ");
         }
-        boolean delete = file.delete();
-        showLog("Delete file is " + delete + " [" + file.getAbsolutePath() + "] ");
     }
 
 }

@@ -87,6 +87,8 @@ public class MainForm implements NotifyLog {
             }
         });
         CleanService.getInstance().setNotifyLog(this);
+        //txtLog.setLineWrap(true);
+        //txtLog.setAutoscrolls(true);
     }
 
     public JPanel getPnlRoot() {
