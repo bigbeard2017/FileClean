@@ -56,23 +56,10 @@ public class CleanService {
                 all.addAll(files);
             }
         }
+
+
         for (String s : all) {
-            File file = new File(s);
-            if (file.exists()) {
-                try {
-
-                    if (file.isDirectory()) {
-
-                        boolean delete = file.delete();
-                        showLog("Delete directory is " + delete + " [" + s + "] ");
-                    } else {
-                        boolean delete = file.delete();
-                        showLog("Delete file is " + delete + " [" + s + "] ");
-                    }
-                } catch (Exception ex) {
-                    showLog("Delete " + s + " occur error ,error information : " + ex.getMessage());
-                }
-            }
+            delete(s);
         }
         showLog("delete over!");
     }
@@ -91,17 +78,26 @@ public class CleanService {
         }
     }
 
-    private void deleteDirector(String rootPath) {
+    private void delete(String rootPath) {
         File file = new File(rootPath);
         if (false == file.exists()) {
             return;
         }
         if (file.isFile()) {
             deleteFile(file);
-        } else if (file.isDirectory()) {
+        } else {
             File[] files = file.listFiles();
-            for (File f : files) {
-                deleteFile(f);
+            if (files.length == 0) {
+                boolean delete = file.delete();
+                showLog("Delete Directory is " + delete + " [" + file.getAbsolutePath() + "] ");
+            } else {
+                for (File f : files) {
+                    if (f.isFile()) {
+                        deleteFile(f);
+                    } else {
+                        delete(f.getAbsolutePath());
+                    }
+                }
             }
         }
 
