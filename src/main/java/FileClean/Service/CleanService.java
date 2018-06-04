@@ -27,6 +27,10 @@ public class CleanService {
         return instance;
     }
 
+    public CleanService() {
+        init();
+    }
+
     public void setNotifyLog(NotifyLog notifyLog) {
         this.notifyLog = notifyLog;
     }
