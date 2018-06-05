@@ -11,6 +11,7 @@ public class Main {
         MainForm mainForm = new MainForm();
         frame.setContentPane(mainForm.$$$getRootComponent$$$());
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setLocationRelativeTo(null);
         frame.setVisible(true);
     }
 }
