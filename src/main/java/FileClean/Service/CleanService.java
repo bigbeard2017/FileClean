@@ -13,12 +13,15 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class CleanService {
 
     private static CleanService instance;
     Map<Integer, SearchFile> searchFileMap = new HashMap<Integer, SearchFile>();
     private NotifyLog notifyLog;
+    private ExecutorService executorService = Executors.newSingleThreadExecutor();
 
     public static CleanService getInstance() {
         if (instance == null) {
@@ -35,16 +38,45 @@ public class CleanService {
         this.notifyLog = notifyLog;
     }
 
-    public void StartClean(List<CleanEntry> search, String rootPath) {
+    public void startClean(List<CleanEntry> search, String rootPath) {
+        executorService.submit(() -> {
+            List<String> all = findFilesOrDirector(search, rootPath);
+            if (all == null) {
+                return;
+            }
+            showLog("==============start to delete files or directories================");
+            for (String s : all) {
+                delete(s);
+            }
+            showLog("==============================delete over==========================");
+        });
+    }
+
+
+    public void startFind(List<CleanEntry> search, String rootPath) {
+        executorService.submit(() -> {
+            List<String> all = findFilesOrDirector(search, rootPath);
+            if (all == null) {
+                return;
+            }
+            for (String s : all) {
+                showLog(s);
+            }
+        });
+
+    }
+
+    private List<String> findFilesOrDirector(List<CleanEntry> search, String rootPath) {
         if (null == rootPath || "".equals(rootPath)) {
             showLog("Root path is null");
-            return;
+            return null;
         }
         if (null == search || search.size() == 0) {
             showLog("search type is null");
-            return;
+            return null;
         }
         List<String> all = new ArrayList<String>();
+        showLog("==============start to find files or directories================");
         for (CleanEntry c : search) {
             List<String> files = null;
             SearchFile searchFile = searchFileMap.get(c.getSearchType().getIndex());
@@ -56,12 +88,8 @@ public class CleanService {
                 all.addAll(files);
             }
         }
-
-
-        for (String s : all) {
-            delete(s);
-        }
-        showLog("delete over!");
+        showLog("==============end to  find files or directories================");
+        return all;
     }
 
 
@@ -99,7 +127,6 @@ public class CleanService {
                 }
                 deleteFile(file);
             }
-
         }
     }
 
