@@ -16,8 +16,8 @@ public class Main {
 //        } catch (UnsupportedLookAndFeelException e) {
 //            e.printStackTrace();
 //        }
-        frame.setContentPane(mainForm.$$$getRootComponent$$$());
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setContentPane(mainForm.getPnlRoot());
+        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
     }
