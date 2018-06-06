@@ -26,11 +26,13 @@ public class ExtentionSearch implements SearchFile {
             }
         } else {
             File[] files1 = file.listFiles();
-            for (File f : files1) {
-                if (f.isFile() && f.getAbsolutePath().endsWith(extention)) {
-                    files.add(f.getAbsolutePath());
-                } else if (f.isDirectory()) {
-                    addFile(files, extention, f.getAbsolutePath());
+            if (null != files1) {
+                for (File f : files1) {
+                    if (f.isFile() && f.getName().endsWith(extention)) {
+                        files.add(f.getAbsolutePath());
+                    } else if (f.isDirectory()) {
+                        addFile(files, extention, f.getAbsolutePath());
+                    }
                 }
             }
         }

@@ -21,11 +21,13 @@ public class FileNameSearch implements SearchFile {
         File file = new File(rootPath);
 
         File[] files1 = file.listFiles();
-        for (File f : files1) {
-            if (f.getAbsolutePath().endsWith(extention)) {
-                files.add(f.getAbsolutePath());
-            } else if (f.isDirectory()) {
-                addFile(files, extention, f.getAbsolutePath());
+        if (null != files1) {
+            for (File f : files1) {
+                if (f.getName().equals(extention)) {
+                    files.add(f.getAbsolutePath());
+                } else if (f.isDirectory()) {
+                    addFile(files, extention, f.getAbsolutePath());
+                }
             }
         }
     }
